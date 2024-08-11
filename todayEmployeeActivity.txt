@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import TimePicker from 'react-timepicker';
+import axios from 'axios';
+import 'react-timepicker/dist/react-timepicker.css';  // Ensure to import the CSS
+
+const UpdateEmployeeActivity = () => {
+    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedTime, setSelectedTime] = useState('09:00');
+    const [status, setStatus] = useState('');
+    const employeeId = 5; // Replace with actual employee ID
+
+    const handleDateChange = (e) => {
+        setSelectedDate(e.target.value);
+    };
+
+    const handleTimeChange = (time) => {
+        setSelectedTime(time);
+    };
+
+    const handleStatusChange = (e) => {
+        setStatus(e.target.value);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedDate) {
+            console.error('Date is required');
+            return;
+        }
+
+        const formattedDateTime = new Date(`${selectedDate} ${selectedTime}`).toISOString(); // Combine date and time
+
+        try {
+            const response = await axios.patch('/employee-activity-update/', null, {
+                params: {
+                    id: employeeId,
+                    status_time: formattedDateTime,
+                    date: selectedDate
+                },
+                data: {
+                    status: status
+                }
+            });
+
+            console.log('Update successful', response.data);
+        } catch (error) {
+            console.error('Error updating activity', error);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label>Status:</label>
+                <input type="text" value={status} onChange={handleStatusChange} />
+            </div>
+            <div>
+                <label>Date:</label>
+                <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                />
+            </div>
+            <div>
+                <label>Time:</label>
+                <TimePicker
+                    value={selectedTime}
+                    onChange={handleTimeChange}
+                    format="HH:mm"
+                />
+            </div>
+            <button type="submit">Update Activity</button>
+        </form>
+    );
+};
+
+export default UpdateEmployeeActivity;

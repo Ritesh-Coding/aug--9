@@ -53,12 +53,9 @@ class NotificationSerializer(serializers.ModelSerializer):
     def get_total_notification(self, obj):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
-            if request.user.is_superuser:
-               
-                notificationCount = Notification.objects.filter(is_Read=False, request_admin=True).count()
-               
-            else:
-               
+            if request.user.is_superuser:               
+                notificationCount = Notification.objects.filter(is_Read=False, request_admin=True).count()               
+            else:               
                 notificationCount = Notification.objects.filter(is_Read=False, request_admin=False).count()
             return notificationCount
         return 0 

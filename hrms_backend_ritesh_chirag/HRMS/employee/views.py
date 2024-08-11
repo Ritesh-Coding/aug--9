@@ -377,9 +377,7 @@ class CheckOut(APIView):
 
                 if totalWorkingHours - total_break_hours > timedelta(hours=0):
                     netWorkingHours = totalWorkingHours - total_break_hours
-                # DailyAttendanceReport.objects.filter(employee_id_id = userId,date = today).update(
-                                                    #  total_break_hours=total_break_hours                                                      
-                                                    #   )
+               
                 
                 DailyAttendanceReport.objects.filter(employee_id_id = userId,date = today).update(date = today,total_working_hours=totalWorkingHours,
                                                      total_break_hours=total_break_hours,
