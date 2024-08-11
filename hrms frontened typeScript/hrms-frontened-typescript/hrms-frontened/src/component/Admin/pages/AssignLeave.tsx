@@ -91,7 +91,7 @@ const AssignLeave : React.FC = () => {
       useEffect(() => {
         fetchLeaveAssignment(currentPage,name) 
       }, [currentPage]);
-      const handleNameChange=(event : any)=>{
+      const handleNameChange=(event : React.ChangeEvent<HTMLInputElement>)=>{
         const newName = event.target.value
         // setName(event.target.value)
         setCurrentPage(1)

@@ -5,22 +5,29 @@ import useAxios from "../../../hooks/useAxios";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Pagination } from "../../../hooks/usePaginationRange";
-
+interface Employee{
+  first_name : string,
+  last_name : string,
+  id : number
+}
+interface AdminChatProp{
+  adminId : number
+}
 const rowsPerPage = 5;
-const AdminChat = ({ adminId }) => {
-  const [employees, setEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+const AdminChat = () => {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [name,setName] = useState("")
   const axiosInstance = useAxios();
-  const handlePageChange = (page) => {
+  const handlePageChange = (page : number) => {
     setCurrentPage(page);
   };
-  const handleNameChange=(event)=>{
+  const handleNameChange=(event : React.ChangeEvent<HTMLInputElement> )=>{
     setName(event.target.value)
 }
-  const fetchEmployeeDetails = (page,name) => {
+  const fetchEmployeeDetails = (page : number,name : string) => {
     axiosInstance
       .get("/api/employees", {
         params: {
@@ -42,7 +49,7 @@ const AdminChat = ({ adminId }) => {
   }, [currentPage,name]);
 
   console.log("this is my employee data", employees);
-  const handleEmployeeSelect = (employee) => {
+  const handleEmployeeSelect = (employee : Employee) => {
     setSelectedEmployee(employee);
   };
 

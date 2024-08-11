@@ -29,13 +29,13 @@ class EmployeeLeaveSerializer(serializers.ModelSerializer):
          if 'type' in data:             
                 leave_type = data['type']
                 checkRemainingLeaves = EmployeeLeaveAssignment.objects.filter(employee_id=user).first()            
-                print(checkRemainingLeaves)
+               
                 if checkRemainingLeaves:
                     checkPaidLeaves = checkRemainingLeaves.remaining_paid_leave  
                     checkCasualLeaves = checkRemainingLeaves.remaining_casual_leave
                     checkSickLeaves = checkRemainingLeaves.remaining_sick_leave
                     checkUnpaidLeaves = checkRemainingLeaves.remaining_unpaid_leave
-                    print(checkPaidLeaves,"-------",checkCasualLeaves,"------",checkSickLeaves)
+                    
 
                     if leave_type == "PL":
                         if checkPaidLeaves <= 0:
@@ -113,24 +113,22 @@ class AdminLeaveUpdateSerializer(serializers.ModelSerializer):
              return serializers.ValidationError({"Please provide status"})  
  
         checkRemainingLeaves = EmployeeLeaveAssignment.objects.filter(employee_id_id=employeeId).first()
-        
-        print(checkRemainingLeaves,"*****************************************")
-                # print("These is my total Paid Leaves that are Approved",checkRemainingLeaves,checkCasualLeaves)
+  
+               
         checkPaidLeaves = checkRemainingLeaves.remaining_paid_leave  
         checkCasualLeaves = checkRemainingLeaves.remaining_casual_leave
         checkSickLeaves = checkRemainingLeaves.remaining_sick_leave
         checkUnpaidLeaves = checkRemainingLeaves.remaining_unpaid_leave
-        print(checkPaidLeaves,"-------",checkCasualLeaves,"------",checkSickLeaves,"------",checkUnpaidLeaves) 
+       
 
         if new_status == "Approved":
                 checkStatus = Leaves.objects.filter(id=id).values()       
                 if checkStatus[0]["type"]=="PL":        
                     if checkPaidLeaves>0:
                         instance.status = validated_data.get('status', new_status)  
-                        print("here1")
+                      
                         updatePaidLeaves = checkPaidLeaves -1
-                        print("here2")
-                        print("this is the ...............................",updatePaidLeaves)
+                  
                         updatePL=  EmployeeLeaveAssignment.objects.filter(employee_id_id=employeeId).update(remaining_paid_leave=updatePaidLeaves)
                         
                         instance.save()
@@ -161,7 +159,7 @@ class AdminLeaveUpdateSerializer(serializers.ModelSerializer):
                     if checkUnpaidLeaves > 0:                
                         instance.status = validated_data.get('status', new_status)                    
                         updateUnpaidLeaves = checkUnpaidLeaves -1
-                        print("tHIS IS MY UNPAID Leave",updateUnpaidLeaves)
+                       
                         EmployeeLeaveAssignment.objects.filter(employee_id_id=employeeId).update(remaining_unpaid_leave=updateUnpaidLeaves)                          
                         instance.save()
                         return instance
@@ -186,9 +184,7 @@ class AdminLeaveSerializer(serializers.ModelSerializer):
     class Meta:
         model= Leaves
         fields = ['id','employee_id','status','date','type','status','reason','leave_day_type','first_name','last_name','user_id']
-    # def get_employeeDetails(self,obj):
-    #     employeeDetails = Employee.objects.filter(id = obj.employee_id_id).values("first_name","last_name")        
-    #     return employeeDetails
+   
     
 class LeaveDetailsSerializer(serializers.ModelSerializer):
     total_approved_leaves = serializers.SerializerMethodField()
@@ -204,11 +200,7 @@ class LeaveDetailsSerializer(serializers.ModelSerializer):
         employee_id = self.context.get('employeeId')
         checkTotalLeaves = Leaves.objects.filter(employee_id = employee_id,status="Approved").count()
         return checkTotalLeaves
-    # def get_employee(self,obj):
-    #     # user = self.context['request'].user 
-    #     employee_id = self.context.get('employeeId')
-    #     employeeDetails = Employee.objects.filter(id = employee_id).values('id','first_name','last_name')
-    #     return employeeDetails
+ 
 
 
     

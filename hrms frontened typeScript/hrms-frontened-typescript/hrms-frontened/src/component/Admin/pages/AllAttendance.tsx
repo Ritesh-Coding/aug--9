@@ -6,26 +6,30 @@ import { Pagination } from '../../../hooks/usePaginationRange';
 import { Link } from 'react-router-dom';
 import { navbarTitle } from '../../../reducers/authReducer';
 import { useDispatch } from 'react-redux';
-
+interface Employee{
+  id: number,
+  username : string,
+  first_name : string,
+  email : string
+}
 const AllAttendance = () => {
-const [employee, setEmployee] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [selectedemployee, setSelectedemployee] = useState(null);
+const [employee, setEmployee] = useState<Employee[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);  
   const [refresh,setRefresh]=useState(0)
   const axiosInstance = useAxios();
   const dispatch = useDispatch();
   dispatch(navbarTitle({ navTitle: "Attendance" }));
   const [name,setName]= useState("")
   const rowsPerPage =5;
-  const handlePageChange = (page)=>{
+  const handlePageChange = (page : number)=>{
     setCurrentPage(page)
    }
 
-   const handleNameChange=(event)=>{
+   const handleNameChange=(event : React.ChangeEvent<HTMLInputElement>)=>{
     setName(event.target.value)
 }
-const fetchAllEmployees=(page,name)=>{
+const fetchAllEmployees=(page : number,name : string)=>{
     
     axiosInstance.get(`api/employees/`,{
       params:{

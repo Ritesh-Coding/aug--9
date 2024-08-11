@@ -21,7 +21,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        print(data,"recieve")
+        
         message = data['message']
         sender_id = data['senderId']
         recipient_id = data['recipientId']

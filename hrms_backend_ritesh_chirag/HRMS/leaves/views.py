@@ -52,7 +52,7 @@ class GetLeaveDetails(APIView):
            
         else:
             queryset = EmployeeLeaveAssignment.objects.filter(employee_id=request.user.id)
-        print('This is my request',request)
+       
         serializer = LeaveDetailsSerializer(queryset, many=True,context={'employeeId': request.query_params.get('id', None) or request.user.id})
         return Response(serializer.data)
     def post(self,request,format=None):
@@ -65,9 +65,9 @@ class GetLeaveDetails(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def patch(self, request, id, format=None):    
-        # print("this is my primary kry in patch",pk)        
+           
         user = EmployeeLeaveAssignment.objects.filter(id=id).first()
-        print("user,,,,,,,,,,,,,,,",user)
+      
         serializer = LeaveDetailsSerializer(user,data= request.data,partial=True)
         if serializer.is_valid():
             serializer.save()      

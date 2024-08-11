@@ -19,20 +19,7 @@ from authApp.models import Employee
 from django.db.models import Q
 from datetime import datetime, timedelta, date, time
 from .permissions import IsAdminOrSelf
-# class EmployeeProfile(viewsets.ModelViewSet):
-#     queryset =EmployeeDocuments.objects.all()
-#     serializer_class = EmployeeProfileSerializer
-#     def get_queryset(self):                
-#           if self.request.user.is_superuser:
-#                return EmployeeDocuments.objects.all()
-#           return EmployeeDocuments.objects.filter(employee_id = self.request.user.id).all()
-    
-#     def get_permissions(self):
-#         if self.request.method in ["POST","PUT","PATCH","DELETE"]:
-#             self.permission_classes = [permissions.IsAdminUser]
-#         else:
-#             self.permission_classes = [permissions.AllowAny]
-#         return super().get_permissions()
+
 
 class EmployeeProfile(viewsets.ModelViewSet):
     queryset =Employee.objects.all()
@@ -45,17 +32,17 @@ class NotificationAll(APIView):
 
     def get(self, request, format=None):
         if request.user.is_superuser:
-            print("inside admin")
+          
             queryset = Notification.objects.filter(is_Read=False, request_admin=True).order_by('-status')
         else:
-            print("inside user")
+         
             queryset = Notification.objects.filter(employee_id=request.user.id, is_Read=False, request_admin=False).order_by('-status')
 
         serializer = NotificationSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def patch(self, request, format=None):
-        print("i am inside patch")
+       
         if request.user.is_staff:
             Notification.objects.filter(is_Read=False).update(is_Read=True)
         else:
@@ -64,17 +51,13 @@ class NotificationAll(APIView):
         return Response({"message": "Notifications updated successfully"}, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
-        print("i am inside post")
+        
         employee_id = request.query_params.get('id', None)
         serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(employee_id_id=employee_id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
-
-
 
 
 #created by Ritesh
@@ -257,18 +240,7 @@ class CompanyRelationsEmployee(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def put(self, request, pk, format=None):
-    #     try:
-    #         relation = CompanyRelations.objects.get(pk=pk)
-    #         print("hello there i  get the pk as ",pk)
-    #     except CompanyRelations.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
-
-    #     serializer = EmployeeRelationSerializer(relation, data=request.data, context={'employeeId': request.query_params.get('id', None) or request.user.id})
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+ 
     def patch(self, request, pk, format=None):    
         data = request.data    
         user = CompanyRelations.objects.filter(id=pk).first()
@@ -314,14 +286,7 @@ class EmployeeDocumentsEmployee(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
-    #  def patch(self, request, pk, format=None):  
-    #     data= request.data      
-    #     user = EmployeeDocuments.objects.filter(id=pk).first()
-    #     serializer = DocumentsUpdateSerializer(user,data= request.data,partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()      
-    #     return Response({"message : Documents Updated Successfuly"}) 
+
     
      def patch(self, request, pk, format=None):
         user = EmployeeDocuments.objects.filter(id=pk).first()
@@ -375,7 +340,7 @@ class CheckOut(APIView):
             today = timezone.now()                
             employee = Attendence.objects.filter(date = today,employee_id_id= userId).values()   
             checkBreakIn = Breaks.objects.filter(date = today,employee_id_id= userId).last() 
-            print(employee,"this is what i get")
+            
             
             lastUpdateId = employee[0]["id"]
             
@@ -390,7 +355,7 @@ class CheckOut(APIView):
             else:       
                 Attendence.objects.filter(pk=lastUpdateId).update(checkOut=today,employee_id_id= userId)
                 employee = Employee.objects.filter(id=userId).values("first_name","last_name","username").first()
-                print(employee,"check Out details h bhai")               
+                          
                 TodaysEmployeeActivity.objects.create(first_name = employee["first_name"],
                                                       last_name =employee["last_name"], status= "Check Out",status_time = timezone.now(),employee_id_id = userId )
                 employee = Attendence.objects.filter(date = today,employee_id_id= userId).last()

@@ -14,8 +14,8 @@ import { navbarTitle } from '../../../reducers/authReducer';
 import DateTime from "../../../utils/DateTime";
 import Holidays from "../UI/Holidays";
 import BirthDays from "../UI/BirthDays";
+import EmployeeChat from "../UI/EmployeeChat";
 import DashboardAttendance from "../UI/DashboardAttendance";
-// import Chat from "../UI/Chat";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import refresh from "../../../assets/refresh.png"
@@ -232,9 +232,8 @@ const Dashboard : React.FC= () => {
           <div
             className="e-card e-card-horizontal"
             style={{ marginLeft: `50px` }}
-          >     
-            
-              <div className="e-card-header-title"><span style={{fontSize:`20px`}}><b>Today's Action</b></span> </div>              
+          >           
+              <div className="e-card-header-title"><span style={{fontSize:`20px`}}><b>Today's Action</b></span> </div>         
                
               <div style={{                   
                     display: `flex`,
@@ -255,10 +254,10 @@ const Dashboard : React.FC= () => {
                 
               <div className="e-card-content dailyLogs">                
                 <DailyLogsApi status={isStatusChanged}/>
-              </div>     
+              </div>   
 
             <span style={{fontSize:`20px`}}><b>Add Your Comment</b></span> 
-            {/* <EmployeeChat recipientId="2"/> */}
+            <EmployeeChat recipientId={2}/>
 
           </div>
         </div>     

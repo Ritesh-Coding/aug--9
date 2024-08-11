@@ -65,7 +65,7 @@ def login_view(request):
             'lastName':user.last_name
         })
     else:
-        return Response({'error': 'Invalid Credentials'}, status=400)
+        return Response({'error': 'Invalid Credentials'}, status=401)
 
 
 @api_view(['POST'])

@@ -100,10 +100,10 @@ const LeaveRequest = () => {
      
     
   }
-  const handleDateChange=(event :any)=>{
+  const handleDateChange=(event :React.ChangeEvent<HTMLInputElement>)=>{
     setDate(event.target.value)
   }
-  const handleNameChange=(event : any)=>{
+  const handleNameChange=(event : React.ChangeEvent<HTMLInputElement>)=>{
       setName(event.target.value)
   }
   if (isFetching) {

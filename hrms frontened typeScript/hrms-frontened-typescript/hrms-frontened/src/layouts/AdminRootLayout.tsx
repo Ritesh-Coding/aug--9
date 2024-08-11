@@ -6,7 +6,7 @@ import ProtectedRoute from '../utils/ProtectedRoute'
 const AdminRootLayout = () => {
   return (
     <>
-     <ProtectedRoute allowedRoles={['user', 'admin']}>
+     <ProtectedRoute allowedRoles={['admin']}>
      <AdminSidebar />
       <main style={{backgroundColor: "#E2E7F0"}}>
         <Outlet />

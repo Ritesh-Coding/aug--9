@@ -4,26 +4,39 @@ import { Button } from 'react-bootstrap';
 import 'react-date-range/dist/styles.css'; 
 import 'react-date-range/dist/theme/default.css'; 
 import useAxios from '../../../hooks/useAxios';
-import { DateRangePicker } from 'react-date-range';
+import {DateRangePicker,RangeKeyDict,Range} from 'react-date-range';
 import { addDays } from 'date-fns';
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { navbarTitle } from '../../../reducers/authReducer';
 import { Pagination } from '../../../hooks/usePaginationRange';
 import "../../User/pages/page.css"
-const formatDate = (dateString) => {
+
+interface AttenDanceDataType {
+  total_present_days: number;
+  total_late_days: number;
+  total_half_days: number;
+  net_working_hours: string;
+  total_office_hours: string;
+  total_break_hours: string;
+  entry_time: string;
+  exit_time: string;
+  date: string;
+}
+
+const formatDate = (dateString : string) => {
     if (dateString === "-") return "-";
-    const options = { hour: '2-digit', minute: '2-digit' };
+    const options : Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleString(undefined, options);
   };
 
-  const formatTime = (timeString) => {
+  const formatTime = (timeString : string) => {
     if (!timeString || timeString === "-") return "-";
     return timeString.substring(0, 5);
   };
 
 
-const getDate = (dateString) => {
+const getDate = (dateString : string) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -31,26 +44,26 @@ const getDate = (dateString) => {
     return `${year}-${month}-${day}`;
   };
   
-const EmployeeAttendance = () => {
+const EmployeeAttendance : React.FC= () => {
 const id = window.location.pathname.split('/')[3] 
-console.log("i got the userId as ",id)
+
 const [isFetching, setIsFetching] = useState(true); 
   const dispatch = useDispatch();
   dispatch(navbarTitle({ navTitle: "Attendance" }));
 
-  const [attendanceData, setAttendanceData] = useState([]);
-  const [isCalender, setIsCalender] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [attendanceData, setAttendanceData] = useState<AttenDanceDataType[]>([]);
+  const [isCalender, setIsCalender] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const rowsPerPage =5;
-  const [myDate, setMyDate] = useState([
+  const [myDate, setMyDate] = useState<Range[]>([
     {
       startDate: new Date(),
       endDate: addDays(new Date(), 7),
       key: 'selection'
     }
   ]);
-  const handlePageChange = (page)=>{
+  const handlePageChange = (page : number)=>{
     setCurrentPage(page)
    }
 
@@ -58,10 +71,10 @@ const [isFetching, setIsFetching] = useState(true);
   const handleCalenderOpen = () => {
     setIsCalender(!isCalender);
   };
-  const fetchAttenDanceData=(myDate,isCalender,page)=>{
+  const fetchAttenDanceData=(myDate : Range[],isCalender : boolean,page: number)=>{
   
-    const formattedStartDate = getDate(myDate[0].startDate);
-    const formattedEndDate = getDate(myDate[0].endDate);
+    const formattedStartDate : string = getDate(myDate[0].startDate!.toString());
+    const formattedEndDate : string = getDate(myDate[0].endDate!.toString());
     let start_date=""
     let end_date=""
     if (isCalender) {
@@ -85,9 +98,8 @@ const [isFetching, setIsFetching] = useState(true);
   useEffect(() => {
     fetchAttenDanceData(myDate,isCalender,currentPage)
     }
-  
   , [myDate, isCalender,currentPage]);
-  console.log("This is my attendance data",attendanceData,)
+ 
 
   if (isFetching) {
     return (
@@ -126,8 +138,7 @@ const [isFetching, setIsFetching] = useState(true);
     <div className="card bg-danger text-white infoAttendance">
       <div className="card-body">Late
       <div>{attendanceData.length>0 && attendanceData[0].total_late_days}</div></div>
-    </div>
-  
+    </div> 
    
   
    
@@ -138,8 +149,8 @@ const [isFetching, setIsFetching] = useState(true);
   
         {isCalender && (
           <DateRangePicker
-            onChange={item => setMyDate([item.selection])}
-            showSelectionPreview={true}
+            onChange={(item: RangeKeyDict) => setMyDate([item.selection])}
+          
             moveRangeOnFirstSelection={false}
             months={2}
             ranges={myDate}
@@ -170,7 +181,7 @@ const [isFetching, setIsFetching] = useState(true);
               </tr>
             ))):  (
               <tr>
-              <td colSpan="5">No leave data available</td>
+              <td>Employee Data Not available</td>
             </tr>
             )
             }

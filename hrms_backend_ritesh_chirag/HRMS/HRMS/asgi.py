@@ -16,16 +16,14 @@ import comments.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'HRMS.settings')
 
+
+websocket_urlpatterns = chat.routing.websocket_urlpatterns + comments.routing.websocket_urlpatterns
+
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(
-            chat.routing.websocket_urlpatterns
+            websocket_urlpatterns
         )
     ),
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            comments.routing.websocket_urlpatterns
-        )
-    ),    
 })

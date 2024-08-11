@@ -45,7 +45,7 @@ const AllLeaves : React.FC= () => {
 
  
   
-  const handleNameChange=(event : any)=>{
+  const handleNameChange=(event : React.ChangeEvent<HTMLInputElement>)=>{
     const newName = event.target.value
  
     debouncedFetchLeave(newName)

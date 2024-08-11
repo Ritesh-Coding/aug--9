@@ -111,7 +111,7 @@ const Attendance: React.FC = () => {
     }
 
     return (
-        <div style={{ marginLeft: "250px" }}>
+        <div style={{ marginLeft: "260px" }}>
             <div className='attendanceMainCard'>
                 <div className="card bg-primary text-white infoAttendance">
                     <div className="card-body">Days

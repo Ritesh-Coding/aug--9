@@ -104,10 +104,11 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true         ,                        /* Skip type checking all .d.ts files. */
-    "jsx": "react", // Add this line to enable JSX
-    "moduleResolution": "node", // Add this line for proper module resolution
-    "allowSyntheticDefaultImports": true // Add this line for compatibility with ES6 modules
+    "jsx": "react", 
+    "moduleResolution": "node", 
+    "allowSyntheticDefaultImports": true 
   },
+  
   "include": [
     "src/**/*",
     "src/declaration.d.ts"

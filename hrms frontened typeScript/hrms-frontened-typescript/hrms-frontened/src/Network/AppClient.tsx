@@ -1,5 +1,5 @@
 import axios from "axios";
-import { error } from "console";
+
 import Swal from "sweetalert2";
 
 
@@ -22,14 +22,18 @@ appClient.interceptors.response.use(
             switch(error.response.status){
                 case 400:
                     Swal.fire("Oops!", "This Page is Not Working Right Now")
+                    break
                 case 401:
                     Swal.fire("Oops!", "Unauthorized Login Detected.")
+                    break
                 case 500:
                     Swal.fire("Oops!", "Internal server Error.")
+                    break
                 default:
-                    Swal.fire("Oops!", "Something Went Wrong.")
+                    Swal.fire("Oops!", "Something Went Wrong.")                    
             }
-        }        
+        }  
+        return Promise.reject(error);      
     }    
 )
 export default appClient

@@ -54,11 +54,11 @@ class NotificationSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
             if request.user.is_superuser:
-                print("I am superUser")
+               
                 notificationCount = Notification.objects.filter(is_Read=False, request_admin=True).count()
-                print("note", notificationCount)
+               
             else:
-                print("I am user")
+               
                 notificationCount = Notification.objects.filter(is_Read=False, request_admin=False).count()
             return notificationCount
         return 0 
@@ -168,7 +168,7 @@ class EmployeeRelationSerializer(serializers.ModelSerializer):
     
     def validate(self, attrs):      
         employee_id = self.context.get('employeeId')
-        print("Finally, I got the id from the URL as", employee_id)
+       
         if not employee_id:
             raise serializers.ValidationError({"error": "Can't get the employeeId"})        
               
@@ -183,7 +183,7 @@ class DocumentsSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         employee_id = self.context.get('employeeId')
-        print("Finally, I got the id from the URL as", employee_id)
+        
         if not employee_id:
             raise serializers.ValidationError({"error": "Can't get the employeeId"})      
         

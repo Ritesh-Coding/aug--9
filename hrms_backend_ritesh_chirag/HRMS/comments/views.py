@@ -17,7 +17,7 @@ class MessageListCreateView(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         today = date.today()
-        print("this is my time",today)
+    
         queryset =  Message.objects.filter(timestamp__date = today)
         
         if user.is_superuser:
